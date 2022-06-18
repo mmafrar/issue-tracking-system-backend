@@ -15,6 +15,6 @@ public class Bug extends Issue {
     private BugPriority priority;
 
     @Column
-    private BugStatus status;
+    private BugStatus status = BugStatus.NEW;
 
 }

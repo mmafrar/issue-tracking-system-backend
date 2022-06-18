@@ -15,6 +15,6 @@ public class Story extends Issue {
     private int estimatedPointValue;
 
     @Column
-    private StoryStatus status;
+    private StoryStatus status = StoryStatus.NEW;
 
 }
