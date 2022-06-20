@@ -1,7 +1,8 @@
 package com.company.product.controller;
 
 import com.company.product.model.Story;
-import com.company.product.service.StoryService;
+import com.company.product.payload.request.StoryRequest;
+import com.company.product.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,23 +15,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/stories")
-public class StoryController implements IssueController<Story> {
+public class StoryController {
 
     @Autowired
-    private StoryService storyService;
+    private IssueService<Story> storyService;
 
-    @Override
     @GetMapping
     public ResponseEntity<List<Story>> findAll() {
         return new ResponseEntity<>(storyService.findAll(), HttpStatus.OK);
     }
 
-    @Override
     @GetMapping("/{id}")
     public ResponseEntity findById(@PathVariable int id) {
         Optional<Story> story = storyService.findById(id);
@@ -40,27 +41,33 @@ public class StoryController implements IssueController<Story> {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @Override
     @PostMapping
-    public ResponseEntity<Story> save(@RequestBody Story object) {
-        return new ResponseEntity<>(storyService.save(object), HttpStatus.OK);
+    public ResponseEntity<Story> save(@RequestBody @Valid StoryRequest storyRequest) {
+        return new ResponseEntity<>(storyService.save(convertStoryRequestToStory(storyRequest)), HttpStatus.OK);
     }
 
-    @Override
     @PutMapping("/{id}")
-    public ResponseEntity update(@PathVariable int id, @RequestBody Story object) {
-        Optional<Story> story = storyService.update(id, object);
+    public ResponseEntity update(@PathVariable int id, @RequestBody @Valid StoryRequest storyRequest) {
+        Optional<Story> story = storyService.update(id, convertStoryRequestToStory(storyRequest));
         if (story.isPresent())
             return new ResponseEntity<>(story, HttpStatus.OK);
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteById(@PathVariable int id) {
         storyService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private Story convertStoryRequestToStory(StoryRequest storyRequest) {
+        Story story = new Story();
+        story.setTitle(storyRequest.getTitle());
+        story.setDescription(storyRequest.getDescription());
+        story.setEstimatedPointValue(storyRequest.getEstimatedPointValue());
+        if (Objects.nonNull(storyRequest.getStatus())) story.setStatus(storyRequest.getStatus());
+        return story;
     }
 
 }

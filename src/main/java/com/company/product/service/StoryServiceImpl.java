@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StoryService implements IssueService<Story> {
+public class StoryServiceImpl implements IssueService<Story> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(StoryService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(StoryServiceImpl.class);
 
     @Autowired
     private StoryRepository storyRepository;
@@ -29,18 +29,18 @@ public class StoryService implements IssueService<Story> {
     }
 
     @Override
-    public Story save(Story object) {
-        return storyRepository.save(object);
+    public Story save(Story entity) {
+        return storyRepository.save(entity);
     }
 
     @Override
-    public Optional<Story> update(int id, Story object) {
+    public Optional<Story> update(int id, Story entity) {
         Story updatedStory = storyRepository.findById(id).orElse(null);
         if (updatedStory != null) {
-            updatedStory.setTitle(object.getTitle());
-            updatedStory.setDescription(object.getDescription());
-            updatedStory.setEstimatedPointValue(object.getEstimatedPointValue());
-            updatedStory.setStatus(object.getStatus());
+            updatedStory.setTitle(entity.getTitle());
+            updatedStory.setDescription(entity.getDescription());
+            updatedStory.setEstimatedPointValue(entity.getEstimatedPointValue());
+            updatedStory.setStatus(entity.getStatus());
             updatedStory = storyRepository.save(updatedStory);
         } else {
             LOG.warn(String.format("No story details for the given id %d", id));

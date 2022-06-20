@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BugService implements IssueService<Bug> {
+public class BugServiceImpl implements IssueService<Bug> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BugService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BugServiceImpl.class);
 
     @Autowired
     private BugRepository bugRepository;
@@ -29,18 +29,18 @@ public class BugService implements IssueService<Bug> {
     }
 
     @Override
-    public Bug save(Bug object) {
-        return bugRepository.save(object);
+    public Bug save(Bug entity) {
+        return bugRepository.save(entity);
     }
 
     @Override
-    public Optional<Bug> update(int id, Bug object) {
+    public Optional<Bug> update(int id, Bug entity) {
         Bug updatedBug = bugRepository.findById(id).orElse(null);
         if(updatedBug != null) {
-            updatedBug.setTitle(object.getTitle());
-            updatedBug.setDescription(object.getDescription());
-            updatedBug.setPriority(object.getPriority());
-            updatedBug.setStatus(object.getStatus());
+            updatedBug.setTitle(entity.getTitle());
+            updatedBug.setDescription(entity.getDescription());
+            updatedBug.setPriority(entity.getPriority());
+            updatedBug.setStatus(entity.getStatus());
             updatedBug = bugRepository.save(updatedBug);
         } else {
             LOG.warn(String.format("No bug details for the given id %d", id));

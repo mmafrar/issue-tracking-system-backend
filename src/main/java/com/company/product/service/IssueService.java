@@ -25,18 +25,18 @@ public interface IssueService<T extends Issue> {
 
     /**
      * This method saves an issue and returns it
-     * @param object
+     * @param entity
      * @return T
      */
-    T save(T object);
+    T save(T entity);
 
     /**
      * This method updates an issue for given id
      * @param id
-     * @param object
-     * @return T
+     * @param entity
+     * @return Optional<T>
      */
-    Optional<T> update(int id, T object);
+    Optional<T> update(int id, T entity);
 
     /**
      * This method deletes an issue for given id

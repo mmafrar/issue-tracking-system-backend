@@ -1,7 +1,8 @@
 package com.company.product.controller;
 
 import com.company.product.model.Bug;
-import com.company.product.service.BugService;
+import com.company.product.payload.request.BugRequest;
+import com.company.product.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,23 +15,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/bugs")
-public class BugController implements IssueController<Bug> {
+public class BugController {
 
     @Autowired
-    private BugService bugService;
+    private IssueService<Bug> bugService;
 
-    @Override
     @GetMapping
     public ResponseEntity<List<Bug>> findAll() {
         return new ResponseEntity<>(bugService.findAll(), HttpStatus.OK);
     }
 
-    @Override
     @GetMapping("/{id}")
     public ResponseEntity findById(@PathVariable int id) {
         Optional<Bug> bug = bugService.findById(id);
@@ -40,27 +41,33 @@ public class BugController implements IssueController<Bug> {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @Override
     @PostMapping
-    public ResponseEntity<Bug> save(@RequestBody Bug object) {
-        return new ResponseEntity<>(bugService.save(object), HttpStatus.OK);
+    public ResponseEntity<Bug> save(@RequestBody @Valid BugRequest bugRequest) {
+        return new ResponseEntity<>(bugService.save(convertBugRequestToBug(bugRequest)), HttpStatus.OK);
     }
 
-    @Override
     @PutMapping("/{id}")
-    public ResponseEntity update(@PathVariable int id, @RequestBody Bug object) {
-        Optional<Bug> bug = bugService.update(id, object);
+    public ResponseEntity update(@PathVariable int id, @RequestBody @Valid BugRequest bugRequest) {
+        Optional<Bug> bug = bugService.update(id, convertBugRequestToBug(bugRequest));
         if (bug.isPresent())
             return new ResponseEntity<>(bug, HttpStatus.OK);
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteById(@PathVariable int id) {
         bugService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private Bug convertBugRequestToBug(BugRequest bugRequest) {
+        Bug bug = new Bug();
+        bug.setTitle(bugRequest.getTitle());
+        bug.setDescription(bugRequest.getDescription());
+        bug.setPriority(bugRequest.getPriority());
+        if (Objects.nonNull(bugRequest.getStatus())) bug.setStatus(bugRequest.getStatus());
+        return bug;
     }
 
 }
