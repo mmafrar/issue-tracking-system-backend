@@ -2,10 +2,14 @@
 
 REST API for an issue tracker for a small team of developers.
 
-## Tech Stack
-* Java 8
-* Spring Boot 2
-* Gradle
+## Technical Choices
+* Java 8 - Java version which I have working experience with
+* Spring Boot 2 - Helps to scaffold a Spring project and manage dependencies
+* Gradle - Facilitates easy dependency management with few lines 
+* H2 Database - Supports rapid development of prototypes and POCs
+* Data JPA - ORM specification which supports Hibernate to interact with database
+* Lombok - Used to removed boilerplate code from source code
+* Validation API - Serves the purpose of validating the payloads received
 
 ## Setup Instructions
 1. Clone the repository
@@ -73,7 +77,7 @@ POST /api/v1/stories
 {
    "title": "Story Title",
    "description": "Story Description",
-   "estimatedPointValue": 0
+   "estimatedPointValue": 1
 }
 ```
 ### Retrieve a list of Stories
@@ -89,17 +93,16 @@ GET /api/v1/stories/{issueId}
 PUT /api/v1/stories/{issueId}
 
 {
-   "estimatedPointValue": 5
+    "title": "Story Title",
+    "description": "Story Description",
+    "estimatedPointValue": 5,
+    "status": "ESTIMATED"
 }
 ```
 ### Delete a Story resource
 ```
 DELETE /api/v1/stories/{issueId}
 ```
-
-
-
-
 ### Create a Bug resource
 ```
 POST /api/v1/bugs
@@ -107,7 +110,7 @@ POST /api/v1/bugs
 {
    "title": "Bug Title",
    "description": "Bug Description",
-   "assignee": null,
+   "developerId": 1,
    "priority": "MAJOR"
 }
 ```
@@ -126,7 +129,7 @@ PUT /api/v1/bugs/{issueId}
 {
     "title": "Bug Title",
     "description": "Bug Description",
-    "assignee": null,
+    "developerId": 1,
     "priority": "MAJOR",
     "status": "VERIFIED"
 }

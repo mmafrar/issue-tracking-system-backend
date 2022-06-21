@@ -13,7 +13,9 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class BugRequest extends IssueRequest {
 
-    @NotNull
+    private int developerId;
+
+    @NotNull(message = "Priority cannot be null")
     private BugPriority priority;
 
     private BugStatus status;

@@ -13,10 +13,10 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class IssueRequest {
 
-    @NotNull
+    @NotNull(message = "Title cannot be null")
     private String title;
 
-    @NotNull
+    @NotNull(message = "Description cannot be null")
     private String description;
 
 }
