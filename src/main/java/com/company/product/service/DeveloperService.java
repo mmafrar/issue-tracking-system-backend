@@ -1,47 +1,54 @@
 package com.company.product.service;
 
 import com.company.product.model.Developer;
+import com.company.product.payload.request.DeveloperRequest;
+import com.company.product.repository.DeveloperRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-/**
- * This interface contains business logic for developer
- */
-public interface DeveloperService {
+@Service
+public class DeveloperService {
 
-    /**
-     * This method returns all the developers
-     * @return List<Developer>
-     */
-    List<Developer> findAll();
+    private static final Logger LOG = LoggerFactory.getLogger(DeveloperService.class);
 
-    /**
-     * This method returns a developer for a given id
-     * @param id
-     * @return Optional<Developer>
-     */
-    Optional<Developer> findById(int id);
+    @Autowired
+    private DeveloperRepository developerRepository;
 
-    /**
-     * This method saves a developer and returns it
-     * @param entity
-     * @return Developer
-     */
-    Developer save(Developer entity);
+    public List<Developer> findAll() {
+        return developerRepository.findAll();
+    }
 
-    /**
-     * This method updates a developer for given id
-     * @param id
-     * @param entity
-     * @return Optional<Developer>
-     */
-    Optional<Developer> update(int id, Developer entity);
+    public Optional<Developer> findById(int id) {
+        return developerRepository.findById(id);
+    }
 
-    /**
-     * This method deletes a developer for given id
-     * @param id
-     */
-    void deleteById(int id);
+    public Developer save(DeveloperRequest developerRequest) {
+        return developerRepository.save(convertDeveloperRequestToDeveloper(developerRequest, new Developer()));
+    }
+
+    public Optional<Developer> update(int id, DeveloperRequest developerRequest) {
+        Developer developer = developerRepository.findById(id).orElse(null);
+
+        if (developer != null)
+            developer = developerRepository.save(convertDeveloperRequestToDeveloper(developerRequest, developer));
+        else
+            LOG.warn(String.format("No developer details for the given id %d", id));
+
+        return Optional.ofNullable(developer);
+    }
+
+    public void deleteById(int id) {
+        developerRepository.deleteById(id);
+    }
+
+    private Developer convertDeveloperRequestToDeveloper(DeveloperRequest developerRequest, Developer developer) {
+        developer.setName(developerRequest.getName());
+        return developer;
+    }
 
 }

@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class DeveloperRequest {
 
-    @NotNull
+    @NotNull(message = "Name cannot be null")
     private String name;
 
 }

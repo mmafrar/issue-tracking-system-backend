@@ -1,7 +1,6 @@
 package com.company.product.controller;
 
 import com.company.product.model.Developer;
-import com.company.product.payload.request.BugRequest;
 import com.company.product.payload.request.DeveloperRequest;
 import com.company.product.service.DeveloperService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +31,9 @@ public class DeveloperController {
         return new ResponseEntity<>(developerService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity findById(@PathVariable int id) {
-        Optional<Developer> developer = developerService.findById(id);
+    @GetMapping("/{developerId}")
+    public ResponseEntity findById(@PathVariable int developerId) {
+        Optional<Developer> developer = developerService.findById(developerId);
         if (developer.isPresent())
             return new ResponseEntity<>(developer, HttpStatus.OK);
         else
@@ -43,28 +42,22 @@ public class DeveloperController {
 
     @PostMapping
     public ResponseEntity<Developer> save(@RequestBody @Valid DeveloperRequest developerRequest) {
-        return new ResponseEntity<>(developerService.save(convertDeveloperRequestToDeveloper(developerRequest)), HttpStatus.OK);
+        return new ResponseEntity<>(developerService.save(developerRequest), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity update(@PathVariable int id, @RequestBody @Valid DeveloperRequest developerRequest) {
-        Optional<Developer> developer = developerService.update(id, convertDeveloperRequestToDeveloper(developerRequest));
+    @PutMapping("/{developerId}")
+    public ResponseEntity update(@PathVariable int developerId, @RequestBody @Valid DeveloperRequest developerRequest) {
+        Optional<Developer> developer = developerService.update(developerId, developerRequest);
         if (developer.isPresent())
             return new ResponseEntity<>(developer, HttpStatus.OK);
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteById(@PathVariable int id) {
-        developerService.deleteById(id);
+    @DeleteMapping("/{developerId}")
+    public ResponseEntity<HttpStatus> deleteById(@PathVariable int developerId) {
+        developerService.deleteById(developerId);
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    private Developer convertDeveloperRequestToDeveloper(DeveloperRequest developerRequest) {
-        Developer developer = new Developer();
-        developer.setName(developerRequest.getName());
-        return developer;
     }
 
 }
