@@ -51,7 +51,7 @@ public class StoryService {
                 Optional<Story> story = stories.stream()
                         .filter(s -> s.getEstimatedPointValue() <= (storyPointsPerWeek - finalStoryPoints))
                         .max(Comparator.comparing(Story::getEstimatedPointValue));
-                if (story.isEmpty() || (storyPoints + story.get().getEstimatedPointValue()) > storyPointsPerWeek) break;
+                if (!story.isPresent() || (storyPoints + story.get().getEstimatedPointValue()) > storyPointsPerWeek) break;
                 storyPoints += story.get().getEstimatedPointValue();
                 weeklyStories.add(story.get());
                 stories.remove(story.get());
