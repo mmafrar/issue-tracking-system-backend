@@ -40,6 +40,11 @@ public class StoryController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/plan")
+    public ResponseEntity plan() {
+        return new ResponseEntity<>(storyService.plan(), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Story> save(@RequestBody @Valid StoryRequest storyRequest) {
         return new ResponseEntity<>(storyService.save(storyRequest), HttpStatus.OK);

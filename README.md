@@ -84,6 +84,10 @@ POST /api/v1/stories
 ```
 GET /api/v1/stories
 ```
+### Retrieve the plan for Stories
+```
+GET /api/v1/stories/plan
+```
 ### Find a Story resource
 ```
 GET /api/v1/stories/{issueId}

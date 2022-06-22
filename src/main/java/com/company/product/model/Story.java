@@ -12,7 +12,7 @@ import javax.persistence.Entity;
 public class Story extends Issue {
 
     @Column
-    private int estimatedPointValue;
+    private long estimatedPointValue;
 
     @Column
     private StoryStatus status = StoryStatus.NEW;

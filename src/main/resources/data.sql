@@ -15,6 +15,6 @@ INSERT INTO issue (dtype, issue_id, title, description, status, estimated_point_
 
 INSERT INTO issue (dtype, issue_id, title, description, status, priority, assignee_developer_id, created_date) VALUES ('Bug', 11, 'Bug Title 1', 'Bug Description 1', 0, 1, 1, CURRENT_TIMESTAMP());
 INSERT INTO issue (dtype, issue_id, title, description, status, priority, assignee_developer_id, created_date) VALUES ('Bug', 12, 'Bug Title 2', 'Bug Description 2', 0, 1, 2, CURRENT_TIMESTAMP());
-INSERT INTO issue (dtype, issue_id, title, description, status, priority, assignee_developer_id, created_date) VALUES ('Bug', 13, 'Bug Title 3', 'Bug Description 3', 0, 1, 3, CURRENT_TIMESTAMP());
+INSERT INTO issue (dtype, issue_id, title, description, status, priority, assignee_developer_id, created_date) VALUES ('Bug', 13, 'Bug Title 3', 'Bug Description 3', 0, 1, 1, CURRENT_TIMESTAMP());
 INSERT INTO issue (dtype, issue_id, title, description, status, priority, assignee_developer_id, created_date) VALUES ('Bug', 14, 'Bug Title 4', 'Bug Description 4', 0, 1, 2, CURRENT_TIMESTAMP());
 INSERT INTO issue (dtype, issue_id, title, description, status, priority, assignee_developer_id, created_date) VALUES ('Bug', 15, 'Bug Title 5', 'Bug Description 5', 0, 1, 1, CURRENT_TIMESTAMP());
