@@ -41,20 +41,20 @@ public class StoryService {
         int week = 0;
         Map<String,List<Story>> storyPlan = new HashMap<>();
         long storyPointsPerWeek = developerRepository.count() * 10;
-        List<Story> stories = storyRepository.findByStatus(StoryStatus.NEW);
+        List<Story> estimatedStories = storyRepository.findByStatus(StoryStatus.ESTIMATED);
 
-        while (!stories.isEmpty()) {
+        while (!estimatedStories.isEmpty()) {
             long storyPoints = 0;
             List<Story> weeklyStories = new ArrayList<>();
             while (storyPoints < storyPointsPerWeek) {
                 long finalStoryPoints = storyPoints;
-                Optional<Story> story = stories.stream()
+                Optional<Story> story = estimatedStories.stream()
                         .filter(s -> s.getEstimatedPointValue() <= (storyPointsPerWeek - finalStoryPoints))
                         .max(Comparator.comparing(Story::getEstimatedPointValue));
                 if (!story.isPresent() || (storyPoints + story.get().getEstimatedPointValue()) > storyPointsPerWeek) break;
                 storyPoints += story.get().getEstimatedPointValue();
+                estimatedStories.remove(story.get());
                 weeklyStories.add(story.get());
-                stories.remove(story.get());
             }
             week++;
             storyPlan.put("Week " + week, weeklyStories);

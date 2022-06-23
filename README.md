@@ -41,7 +41,7 @@ Issue table (issue) and Developer table (developer) are created on start-up.
 ## CircleCI Integration
 ![CircleCI Integration](README/circleci-integration.png)
 
-## REST API Endpoints
+## REST API Endpoints ([Postman Collection](README/postman-collection.json))
 ### Create a Developer resource
 ```
 POST /api/v1/developers
@@ -76,8 +76,7 @@ POST /api/v1/stories
 
 {
    "title": "Story Title",
-   "description": "Story Description",
-   "estimatedPointValue": 1
+   "description": "Story Description"
 }
 ```
 ### Retrieve a list of Stories
@@ -114,7 +113,7 @@ POST /api/v1/bugs
 {
    "title": "Bug Title",
    "description": "Bug Description",
-   "developerId": 1,
+   "developerId": 11,
    "priority": "MAJOR"
 }
 ```
@@ -133,7 +132,7 @@ PUT /api/v1/bugs/{issueId}
 {
     "title": "Bug Title",
     "description": "Bug Description",
-    "developerId": 1,
+    "developerId": 11,
     "priority": "MAJOR",
     "status": "VERIFIED"
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -41,7 +42,7 @@ public class StoryController {
     }
 
     @GetMapping("/plan")
-    public ResponseEntity plan() {
+    public ResponseEntity<Map<String,List<Story>>> plan() {
         return new ResponseEntity<>(storyService.plan(), HttpStatus.OK);
     }
 
