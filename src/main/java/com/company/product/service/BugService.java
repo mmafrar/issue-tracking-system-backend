@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * This class contains business logic for bug
+ */
 @Service
 public class BugService {
 
@@ -26,18 +29,38 @@ public class BugService {
     @Autowired
     private DeveloperRepository developerRepository;
 
+    /**
+     * This method returns all the bugs
+     * @return List<Bug>
+     */
     public List<Bug> findAll() {
         return bugRepository.findAll();
     }
 
+    /**
+     * This method returns a bug for a given id
+     * @param id
+     * @return Optional<Bug>
+     */
     public Optional<Bug> findById(int id) {
         return bugRepository.findById(id);
     }
 
+    /**
+     * This method saves a bug and returns it
+     * @param bugRequest
+     * @return Bug
+     */
     public Bug save(BugRequest bugRequest) {
         return bugRepository.save(convertBugRequestToBug(bugRequest, new Bug()));
     }
 
+    /**
+     * This method updates a bug for given id and returns it
+     * @param id
+     * @param bugRequest
+     * @return Optional<Bug>
+     */
     public Optional<Bug> update(int id, BugRequest bugRequest) {
         Bug bug = bugRepository.findById(id).orElse(null);
 
@@ -49,6 +72,10 @@ public class BugService {
         return Optional.ofNullable(bug);
     }
 
+    /**
+     * This method deletes a bug for given id
+     * @param id
+     */
     public void deleteById(int id) {
         bugRepository.deleteById(id);
     }

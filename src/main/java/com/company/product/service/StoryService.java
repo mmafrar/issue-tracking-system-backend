@@ -18,6 +18,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * This class contains business logic for story
+ */
 @Service
 public class StoryService {
 
@@ -29,18 +32,32 @@ public class StoryService {
     @Autowired
     private DeveloperRepository developerRepository;
 
+    /**
+     * This method returns all the stories
+     * @return List<Story>
+     */
     public List<Story> findAll() {
         return storyRepository.findAll();
     }
 
+    /**
+     * This method returns a story for a given id
+     * @param id
+     * @return Optional<Story>
+     */
     public Optional<Story> findById(int id) {
         return storyRepository.findById(id);
     }
 
+    /**
+     * This method returns the plan for the estimated stories
+     * @return Map<String,List<Story>>
+     */
     public Map<String,List<Story>> plan() {
         int week = 0;
         Map<String,List<Story>> storyPlan = new HashMap<>();
         long storyPointsPerWeek = developerRepository.count() * 10;
+        // Made an assumption that only estimated stories will be considered for the plan
         List<Story> estimatedStories = storyRepository.findByStatus(StoryStatus.ESTIMATED);
 
         while (!estimatedStories.isEmpty()) {
@@ -53,6 +70,7 @@ public class StoryService {
                         .max(Comparator.comparing(Story::getEstimatedPointValue));
                 if (!story.isPresent() || (storyPoints + story.get().getEstimatedPointValue()) > storyPointsPerWeek) break;
                 storyPoints += story.get().getEstimatedPointValue();
+                LOG.debug(estimatedStories.toString());
                 estimatedStories.remove(story.get());
                 weeklyStories.add(story.get());
             }
@@ -63,10 +81,21 @@ public class StoryService {
         return storyPlan;
     }
 
+    /**
+     * This method saves a story and returns it
+     * @param storyRequest
+     * @return Story
+     */
     public Story save(StoryRequest storyRequest) {
         return storyRepository.save(convertStoryRequestToStory(storyRequest, new Story()));
     }
 
+    /**
+     * This method updates a story for given id and returns it
+     * @param id
+     * @param storyRequest
+     * @return Optional<Story>
+     */
     public Optional<Story> update(int id, StoryRequest storyRequest) {
         Story story = storyRepository.findById(id).orElse(null);
 
@@ -78,6 +107,10 @@ public class StoryService {
         return Optional.ofNullable(story);
     }
 
+    /**
+     * This method deletes a story for given id
+     * @param id
+     */
     public void deleteById(int id) {
         storyRepository.deleteById(id);
     }

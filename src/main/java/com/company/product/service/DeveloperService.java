@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This class contains business logic for developer
+ */
 @Service
 public class DeveloperService {
 
@@ -19,18 +22,38 @@ public class DeveloperService {
     @Autowired
     private DeveloperRepository developerRepository;
 
+    /**
+     * This method returns all the developers
+     * @return List<Developer>
+     */
     public List<Developer> findAll() {
         return developerRepository.findAll();
     }
 
+    /**
+     * This method returns a developer for a given id
+     * @param id
+     * @return Optional<Developer>
+     */
     public Optional<Developer> findById(int id) {
         return developerRepository.findById(id);
     }
 
+    /**
+     * This method saves a developer and returns it
+     * @param developerRequest
+     * @return Developer
+     */
     public Developer save(DeveloperRequest developerRequest) {
         return developerRepository.save(convertDeveloperRequestToDeveloper(developerRequest, new Developer()));
     }
 
+    /**
+     * This method updates a developer for given id and returns it
+     * @param id
+     * @param developerRequest
+     * @return Optional<Developer>
+     */
     public Optional<Developer> update(int id, DeveloperRequest developerRequest) {
         Developer developer = developerRepository.findById(id).orElse(null);
 
@@ -42,6 +65,10 @@ public class DeveloperService {
         return Optional.ofNullable(developer);
     }
 
+    /**
+     * This method deletes a developer for given id
+     * @param id
+     */
     public void deleteById(int id) {
         developerRepository.deleteById(id);
     }
